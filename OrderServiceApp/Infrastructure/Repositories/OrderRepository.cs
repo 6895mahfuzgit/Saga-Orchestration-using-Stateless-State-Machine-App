@@ -15,29 +15,44 @@ namespace OrderServiceApp.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<bool> Save(Order order)
+        public async Task<Order> Save(Order order)
         {
-            _context.orders.Add(order);
+            try
+            {
+                _context.orders.Add(order);
+                _context.SaveChanges();
+
+                if (order.orderDtls.Any())
+                {
+                    order.orderDtls.ToList().ForEach(x =>
+                    {
+                        x.OrderId = order.Id;
+                    });
+
+
+                }
+                _context.orderDtls.AddRange(order.orderDtls);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine(ex.Message);
+            }
+
+            return order;
+        }
+        public async Task<Order> Delete(int id)
+        {
+            Order order = await _context.orders.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (order != null)
+            {
+                _context.orders.Remove(order);
+            }
             _context.SaveChanges();
 
-            if (order.orderDtls.Any())
-            {
-                order.orderDtls.ToList().ForEach(x =>
-                {
-                    x.OrderId = order.Id;
-                });
-
-              
-            }
-            _context.orderDtls.AddRange(order.orderDtls);
-            return _context.SaveChanges() > 0;
-        }
-        public async Task<bool> Delete(int id)
-        {
-            Order order = await _context.orders.FirstOrDefaultAsync(x=>x.Id==id);
-
-            _context.orders.Remove(order);
-            return _context.SaveChanges() > 0;
+            return order;
 
         }
 

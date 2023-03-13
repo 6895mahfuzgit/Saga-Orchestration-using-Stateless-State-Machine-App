@@ -4,8 +4,8 @@ namespace OrderServiceApp.Core.Repositories
 {
     public interface IOrderRepository
     {
-        Task<bool> Save(Order order);
-        Task<bool> Delete(int id);
+        Task<Order> Save(Order order);
+        Task<Order> Delete(int id);
 
     }
 }

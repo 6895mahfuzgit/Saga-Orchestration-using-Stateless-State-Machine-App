@@ -18,17 +18,16 @@ namespace OrderServiceApp.Controllers
 
 
         [HttpPost]
-        public async Task<bool> Save(Order order)
+        public async Task<Order> Save(Order order)
         {
             return await _orderRepository.Save(order);
         }
 
 
         [HttpDelete("{id}")]
-        public async Task  Delete(int id)
+        public async Task<Order> Delete(int id)
         {
-            await _orderRepository.Delete(id);
-
+            return await _orderRepository.Delete(id);
         }
 
     }

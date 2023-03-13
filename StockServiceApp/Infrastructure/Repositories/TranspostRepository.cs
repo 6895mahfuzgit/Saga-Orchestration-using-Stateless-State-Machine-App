@@ -17,16 +17,32 @@ namespace TransportServiceApp.Infrastructure.Repositories
 
         public async Task<Transpost> Add(Transpost transpost)
         {
-            await _context.Transposts.AddAsync(transpost);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.Transposts.AddAsync(transpost);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
             return transpost;
         }
 
         public async Task<Transpost> Remove(Transpost transpost)
         {
-            Transpost transpostFromDB = await _context.Transposts.FirstOrDefaultAsync(x => x.OrderId == transpost.OrderId);
-            _context.Transposts.Remove(transpostFromDB);
-            await _context.SaveChangesAsync();
+            try
+            {
+                Transpost transpostFromDB = await _context.Transposts.FirstOrDefaultAsync(x => x.OrderId == transpost.OrderId);
+                _context.Transposts.Remove(transpostFromDB);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
             return transpost;
         }
     }

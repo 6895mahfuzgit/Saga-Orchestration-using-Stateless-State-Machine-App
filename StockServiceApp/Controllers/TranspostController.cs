@@ -20,6 +20,7 @@ namespace TransportServiceApp.Controllers
         [HttpPost("add")]
         public async Task<Transpost> Add(Transpost transpost)
         {
+            
             return await _transpostRepository.Add(transpost);
         }
 
